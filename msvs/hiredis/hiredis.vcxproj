@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\deps\hiredis\hiredis.c" />
     <ClCompile Include="..\..\deps\hiredis\net.c" />
     <ClCompile Include="..\..\deps\hiredis\sds.c" />
+    <ClCompile Include="..\..\src\win32fixes.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\deps\hiredis\async.h" />

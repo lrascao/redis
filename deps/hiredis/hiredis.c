@@ -718,7 +718,7 @@ int redisvFormatCommand(char **target, const char *format, va_list ap) {
         return -1;
 
     while(*c != '\0') {
-        if (*c != '%' || c[1] == '\0') {
+        if ((*c != '%' && *c != '.') || c[1] == '\0') {
             if (*c == ' ') {
                 if (touched) {
                     newargv = realloc(curargv,sizeof(char*)*(argc+1));
@@ -739,13 +739,19 @@ int redisvFormatCommand(char **target, const char *format, va_list ap) {
                 touched = 1;
             }
         } else {
-            char *arg;
-            size_t size;
+            char *arg = NULL;
+            size_t size = -1;
 
             /* Set newarg so it can be checked even if it is not touched. */
             newarg = curarg;
 
             switch(c[1]) {
+			case '.':
+				size = va_arg(ap,size_t);
+				arg = va_arg(ap,char*);
+                if (size > 0)
+                    newarg = sdscatlen(curarg,arg,size);
+				break;
             case 's':
                 arg = va_arg(ap,char*);
                 size = strlen(arg);
